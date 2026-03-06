@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcqgenerator"
+version = "0.1"
+description = "AI-powered MCQ generator from PDFs"
+authors = [
+  { name = "Syeda Namrah Daimi", email = "daiminimrah@gmail.com" }
+]
+
+dependencies = [
+  "openai",
+  "langchain",
+  "streamlit",
+  "python-dotenv",
+  "PyPDF2"
+]
+
+requires-python = ">=3.9"
