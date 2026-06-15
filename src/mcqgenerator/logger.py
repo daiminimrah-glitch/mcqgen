@@ -1,5 +1,6 @@
 
 import os
+import logging
 from pathlib import Path
 from datetime import datetime
 
@@ -19,5 +20,5 @@ LOG_PATH = LOG_DIR / LOG_FILE
 logging.basicConfig(
     level=logging.INFO,
     filename=LOG_PATH,
-    format="%(asctime)s - %(lineno)d - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(lineno)d - %(name)s - %(levelname)s - %(message)s",
 )
