@@ -1,4 +1,4 @@
-# MCQ Generator
+# QuizForge
 
 An AI-powered MCQ Generator built with Streamlit, LangChain, and OpenAI.
 

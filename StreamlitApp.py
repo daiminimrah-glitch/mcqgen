@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils import (
+from src.mcqgenerator.utils import  (
     extract_text_from_pdf,
     generate_quiz
 )

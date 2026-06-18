@@ -20,7 +20,8 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-load_dotenv()
+load_dotenv(override=True)
+
 
 llm = ChatOpenAI(
     model="gpt-4o-mini",
