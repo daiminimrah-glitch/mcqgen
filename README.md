@@ -1,6 +1,6 @@
 # QuizForge
 
-[Live Demo](http://18.221.35.210:8501)
+[Live Demo](http://3.146.88.232:8501)
 
 An AI-powered MCQ Generator built with Streamlit, LangChain, and OpenAI.
 
