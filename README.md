@@ -1,5 +1,7 @@
 # QuizForge
 
+[Live Demo](http://18.221.35.210:8501)
+
 An AI-powered MCQ Generator built with Streamlit, LangChain, and OpenAI.
 
 Users can upload a PDF, extract its content, and automatically generate multiple-choice questions based on the uploaded material.
