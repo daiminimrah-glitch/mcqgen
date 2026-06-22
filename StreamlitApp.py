@@ -10,7 +10,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
 
-html, body, [class*="css"] {
+[data-testid="stAppViewContainer"] {
     font-family: 'Space Grotesk', sans-serif;
 }
 </style>
@@ -168,7 +168,20 @@ h1, h2, h3, p, label {
 [data-testid="stSidebar"] * {
     font-family: 'Space Grotesk', sans-serif !important;
 }
-            
+
+ /* Fix Streamlit Material Icons */
+.material-symbols-rounded,
+.material-icons {
+    font-family: "Material Symbols Rounded" !important;
+}
+      /* Fix sidebar collapse icon */
+[data-testid="stSidebarCollapseButton"] {
+    font-family: "Material Symbols Rounded" !important;
+}
+
+[data-testid="stSidebarCollapseButton"] * {
+    font-family: "Material Symbols Rounded" !important;
+}              
 </style>
 """, unsafe_allow_html=True)
 
