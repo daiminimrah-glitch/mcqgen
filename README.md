@@ -6,6 +6,8 @@ An AI-powered MCQ Generator built with Streamlit, LangChain, and OpenAI.
 
 Users can upload a PDF, extract its content, and automatically generate multiple-choice questions based on the uploaded material.
 
+
+
 ---
 
 ## Features
@@ -18,6 +20,7 @@ Users can upload a PDF, extract its content, and automatically generate multiple
 - Configure number of questions
 - Streamlit-based user interface
 
+Coming soon :RAG, Chat with PDF, multi agent system beginning with Quality checking agent.
 ---
 
 ## Project Structure
