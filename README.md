@@ -1,49 +1,66 @@
-# QuizForge
 
+# QuizForge — AI-Powered Study Assistant
 [Live Demo](http://3.146.88.232:8501)
 
-An AI-powered MCQ Generator built with Streamlit, LangChain, and OpenAI.
+QuizForge is an AI-powered study application built with Python, Streamlit, LangChain, and OpenAI. It currently allows users to upload PDF documents and generate customizable multiple-choice questions from their content.
 
-Users can upload a PDF, extract its content, and automatically generate multiple-choice questions based on the uploaded material.
+The project is evolving into a **multi-agent, RAG-powered adaptive learning system** designed to provide personalized, document-grounded study experiences.
 
-
+The planned system will coordinate specialized AI agents to generate quizzes, explain concepts, create study materials, evaluate student performance, and adapt learning activities based on individual progress.
 
 ---
 
 ## Features
 
-- Upload PDF documents
-- Extract text from PDFs
-- Generate MCQs using OpenAI
-- Select subject name
-- Choose difficulty level (Easy, Medium, Hard)
-- Configure number of questions
-- Streamlit-based user interface
+### Current Features
+- Upload PDF documents and extract text.
+- Generate multiple-choice questions using OpenAI and LangChain.
+- Customize subject, difficulty level, and number of questions.
+- View generated questions and correct answers through a Streamlit interface.
 
-Coming soon :RAG, Chat with PDF, multi agent system beginning with Quality checking agent.
+### In Development
+- **AI Study Agent:** Interpret natural-language study requests and automatically select and execute study tools.
+- **Retrieval-Augmented Generation (RAG):** Retrieve relevant information from uploaded documents to support grounded study materials.
+- **Document-Based Learning:** Generate quizzes, summaries, and explanations with chapter and page references.
+
+### Planned Features
+- **Multi-Agent Collaboration:** Coordinate specialized Planner, Tutor, Quiz, and Evaluator agents.
+- **Adaptive Learning:** Analyze quiz performance, identify weak concepts, and generate targeted follow-up activities.
+- **Chat with PDF:** Ask questions about uploaded study materials.
+- **Learning Progress Tracking:** Save quiz results and monitor improvement over time.
+- **Interactive Quiz Interface:** Answer questions directly and receive scores and feedback.
+- **React + FastAPI:** Build a dedicated frontend and Python API for the expanded application.
+
 ---
 
 ## Project Structure
-
-```text
 mcqgen/
-│
-├── StreamlitApp.py          # Streamlit UI
-├── response.json            # Expected MCQ JSON format
+├── StreamlitApp.py
+├── response.json
 ├── requirements.txt
 ├── README.md
-|
-│
 ├── experiment/
-│   ├── mcq.ipynb            # Development notebook
-│   └── data.txt
-│
+│   └── mcq.ipynb
 └── src/
     └── mcqgenerator/
-        ├── utils.py         # PDF extraction & quiz generation
+        ├── __init__.py
+        ├── utils.py
         ├── logger.py
-        ├── test.py
-        └── __init__.py
+        ├── agent/
+        │   ├── __init__.py
+        │   ├── planner.py
+        │   ├── plan.py
+        │   ├── executor.py
+        │   ├── tools.py
+        │   ├── prompts.py
+        │   └── study_agent.py
+        └── rag/
+            ├── __init__.py
+            ├── loader.py
+            ├── chunker.py
+            ├── embeddings.py
+            ├── retriever.py
+            └── vector_store.py
 ```
 
 ---
@@ -125,13 +142,21 @@ The application will open automatically in your browser.
 
 ---
 
-## Future Improvements
+## Development Roadmap
 
-- Interactive quiz interface
-- Quiz scoring system
-- Export generated MCQs to CSV
-- Support for DOCX and TXT files
-- Question review and editing
+- [x] PDF upload and text extraction
+- [x] AI-powered MCQ generation
+- [x] Customizable question difficulty and quantity
+- [x] Streamlit-based interface
+- [ ] Complete the Study Agent's planning and tool-execution workflow
+- [ ] Integrate RAG with chapter and page references
+- [ ] Implement specialized Tutor, Quiz, and Evaluator agents
+- [ ] Add interactive quizzes and automated scoring
+- [ ] Develop adaptive learning with performance-based feedback
+- [ ] Implement persistent study progress tracking
+- [ ] Add conversational PDF interaction
+- [ ] Develop a React frontend and FastAPI backend
+- [ ] Support additional document formats and quiz exports
 
 ---
 
