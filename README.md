@@ -34,6 +34,8 @@ The planned system will coordinate specialized AI agents to generate quizzes, ex
 ---
 
 ## Project Structure
+
+```text
 mcqgen/
 ├── StreamlitApp.py
 ├── response.json
@@ -62,6 +64,10 @@ mcqgen/
             ├── retriever.py
             └── vector_store.py
 ```
+
+---
+
+## Installation
 
 ---
 
