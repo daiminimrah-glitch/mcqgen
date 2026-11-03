@@ -1,13 +1,18 @@
 
+
 {
-  "1": {
-    "mcq": "question here",
-    "options": {
-      "a": "option a",
-      "b": "option b",
-      "c": "option c",
-      "d": "option d"
-    },
-    "correct": "a"
-  }
+  "questions": [
+    {
+      "question": "question here",
+      "options": {
+        "A": "option A",
+        "B": "option B",
+        "C": "option C",
+        "D": "option D"
+      },
+      "correct_answer": "A",
+      "explanation": "Explain why A is correct.",
+      "source_page": null
+    }
+  ]
 }

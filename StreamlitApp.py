@@ -1,6 +1,15 @@
-import streamlit as st
-import json 
+"""
+StreamlitApp.py
 
+- Creates the QuizForge user interface using Streamlit.
+- Allows students to upload PDFs and select quiz settings.
+- Calls utils.py to extract PDF text and generate a quiz.
+- Receives the Pydantic-validated quiz.
+- Displays questions, multiple-choice options, correct answers, and explanations.
+
+This file handles the frontend, NOT the LLM generation or validation.
+"""
+import streamlit as st
 from src.mcqgenerator.utils import  (
     extract_text_from_pdf,
     generate_quiz
@@ -228,6 +237,38 @@ with col2:
     )
 
 
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap');
+
+/* Main app text */
+html, body, [data-testid="stApp"],
+[data-testid="stApp"] p,
+[data-testid="stApp"] label {
+    font-family: 'Nunito', sans-serif !important;
+}
+
+/* Playful headings */
+h1, h2, h3, h4 {
+    font-family: 'Fredoka', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Rounded, friendly buttons */
+.stButton button,
+[data-testid="stFormSubmitButton"] button {
+    font-family: 'Fredoka', sans-serif !important;
+    font-weight: 600 !important;
+    border-radius: 16px !important;
+}
+
+/* Answer choices */
+[data-testid="stRadio"] label {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 600 !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 if st.button("Generate Quiz"):
 
@@ -235,40 +276,44 @@ if st.button("Generate Quiz"):
         st.error("Please upload a PDF first.")
 
     else:
-
         text = extract_text_from_pdf(uploaded_file)
+
         with st.spinner("Generating quiz..."):
-         
+            quiz = generate_quiz(
+                text,
+                num_questions,
+                subject,
+                difficulty
+            )
 
-           quiz = generate_quiz(
-           text,
-           num_questions,
-           subject,
-           difficulty
-           )
-
-           quiz = quiz.replace("```json", "")
-           quiz = quiz.replace("```", "")
-           quiz = json.loads(quiz)
-           
         st.subheader("📚 Generated Quiz")
-        for q_num, q_data in quiz.items():
+
+        for q_num, question in enumerate(quiz.questions, start=1):
 
             with st.container(border=True):
 
                 st.markdown(f"### Question {q_num}")
 
-                st.write(q_data["mcq"])
+                st.write(question.question)
 
-                for option_key, option_value in q_data["options"].items():
+                for option_key, option_value in question.options.items():
                     st.markdown(
-                        f"**{option_key.upper()}.** {option_value}"
+                        f"**{option_key}.** {option_value}"
                     )
 
-                correct = q_data["correct"]
-                answer_text = q_data["options"][correct]
+                correct = question.correct_answer
+                answer_text = question.options[correct]
 
                 with st.expander("✅ Show Answer"):
                     st.success(
-                        f"Correct Answer: {correct.upper()} — {answer_text}"   
-                    )    
+                        f"Correct Answer: {correct} — {answer_text}"
+                    )
+
+                    st.write(
+                        f"**Explanation:** {question.explanation}"
+                    )
+
+                    if question.source_page is not None:
+                        st.caption(
+                            f"Source: Page {question.source_page}"
+                        )
