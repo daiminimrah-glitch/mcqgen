@@ -71,7 +71,7 @@ quiz_prompt = ChatPromptTemplate.from_template(quiz_template)
 quiz_chain = quiz_prompt | llm
 
 
-def generate_quiz(text, num_questions, difficulty):
+def generate_quiz(text, num_questions, difficulty, subject="General"):
 
     # Validate quiz settings before calling the LLM
     config = QuizConfig(

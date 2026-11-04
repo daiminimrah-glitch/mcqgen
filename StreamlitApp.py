@@ -357,10 +357,13 @@ if st.session_state.quiz is not None:
 
             st.write(question.question)
 
-            for option_key, option_value in question.options.items():
-                st.markdown(
-                    f"**{option_key}.** {option_value}"
-                )
+            selected_answer = st.radio(
+            "Choose your answer:",
+             options=list(question.options.keys()),
+             format_func=lambda key: f"{key}. {question.options[key]}",
+             index=None,
+             key=f"question_{q_num}"
+          )
 
             correct = question.correct_answer
             answer_text = question.options[correct]

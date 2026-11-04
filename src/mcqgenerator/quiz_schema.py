@@ -15,6 +15,7 @@ from typing import Literal
 class QuizConfig(BaseModel):
     num_questions: int = Field(default=5, ge=1, le=30)
     difficulty: Literal["easy", "medium", "hard"] = "medium"
+    subject: str = "General"
 
 
 class GeneratedQuestionSchema(BaseModel):
