@@ -9,35 +9,34 @@ StreamlitApp.py
 
 This file handles the frontend, NOT the LLM generation or validation.
 """
+
 import streamlit as st
-from src.mcqgenerator.utils import  (
+
+from src.mcqgenerator.utils import (
     extract_text_from_pdf,
     generate_quiz
 )
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
-
-[data-testid="stAppViewContainer"] {
-    font-family: 'Space Grotesk', sans-serif;
-}
-</style>
-""", unsafe_allow_html=True)
+# ==========================================
+# PAGE CONFIGURATION
+# ==========================================
 
 st.set_page_config(
     page_title="QuizForge",
-    page_icon="🧠",
-    layout="wide"
+    page_icon="src/mcqgenerator/assets/favicon.png",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
-with st.sidebar:
-    st.header("🧠 About QuizForge")
-    st.write(
-        "Upload a PDF and generate AI-powered quizzes instantly."
-    )
+    
+
+
+# ==========================================
+# QUIZFORGE STYLING
+# ==========================================
 
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Pacifico&display=swap');
 
 /* Main background */
 [data-testid="stAppViewContainer"] {
@@ -49,88 +48,96 @@ st.markdown("""
     );
 }
 
-/* Main content area */
+/* Default font */
+html, body,
+[data-testid="stApp"],
+[data-testid="stApp"] p,
+[data-testid="stApp"] label,
+[data-testid="stApp"] input,
+[data-testid="stApp"] button {
+    font-family: 'Nunito', sans-serif !important;
+}
+
+/* Main content */
 .main > div {
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255,255,255,0.15);
-            }
+}
 
 /* Header */
 [data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
+    background: transparent;
 }
 
 /* Text colors */
-h1, h2, h3, p, label {
+h1, h2, h3, h4, p, label {
     color: white !important;
 }
 
-/* Generate Quiz button */
+/* Headings */
+h1, h2, h3, h4 {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 900 !important;
+}
 
-    .stButton > button {
+/* QuizForge title only */
+.quizforge-title {
+    font-family: 'Pacifico', cursive !important;
+    font-size: 3rem;
+    font-weight: 400 !important;
+    line-height: 1.7;
+    color: white;
+    margin-bottom: 0;
+}
+
+/* Generate Quiz button */
+.stButton > button {
     background: linear-gradient(
         135deg,
         #22c55e,
         #16a34a
     ) !important;
-
     color: white !important;
     border: none !important;
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 16px !important;
+    font-weight: 800 !important;
     padding: 0.6rem 1.5rem;
 }
-}
 
-/* Hover */
-    .stButton > button:hover {
+/* Button hover */
+.stButton > button:hover {
     background: linear-gradient(
         135deg,
         #16a34a,
         #15803d
     ) !important;
-
     color: white !important;
 }
 
-
-/* Focus */
-.stButton > button:focus {
-    color: white !important;
-}
-
-
-
-/* Input boxes */
+/* Inputs */
 .stTextInput input,
 .stNumberInput input {
     border-radius: 10px;
 }
 
-              /* Sidebar */
+/* Sidebar */
 [data-testid="stSidebar"] {
     background: #1e293b;
 }
 
-/* Sidebar text */
 [data-testid="stSidebar"] * {
     color: white !important;
 }
-            
-/* Select box */
-.stSelectbox {
-    border-radius: 10px;
-}
 
-            /* File uploader */
+/* File uploader */
 [data-testid="stFileUploader"] {
     background: rgba(255,255,255,0.10);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 15px;
     padding: 12px;
 }
-            /* File uploader button */
+
 [data-testid="stFileUploader"] button {
     background: rgba(255,255,255,0.12) !important;
     color: white !important;
@@ -138,80 +145,105 @@ h1, h2, h3, p, label {
     border-radius: 12px !important;
 }
 
-/* Hover */
 [data-testid="stFileUploader"] button:hover {
     background: rgba(255,255,255,0.20) !important;
-    color: white !important;
 }
 
-/* Button text */
-[data-testid="stFileUploader"] button * {
-    color: white !important;
+/* Answer choices */
+[data-testid="stRadio"] label {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 600 !important;
 }
 
-/* Uploaded file display */
-[data-testid="stFileUploader"] section {
-    background: rgba(255,255,255,0.12);
-    border-radius: 12px;
-}
-
-/* File uploader text */
-[data-testid="stFileUploader"] {
-    color: white !important;
-}
-
-/* Drag and drop text */
-[data-testid="stFileUploader"] label,
-[data-testid="stFileUploader"] small,
-[data-testid="stFileUploader"] span,
-[data-testid="stFileUploader"] p {
-    color: rgba(255,255,255,0.85) !important;
-}     
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background: #1e293b;
-}
-
-/* Sidebar font */
-[data-testid="stSidebar"] * {
-    font-family: 'Space Grotesk', sans-serif !important;
-}
-
- /* Fix Streamlit Material Icons */
+/* Streamlit icons */
 .material-symbols-rounded,
-.material-icons {
-    font-family: "Material Symbols Rounded" !important;
-}
-      /* Fix sidebar collapse icon */
-[data-testid="stSidebarCollapseButton"] {
-    font-family: "Material Symbols Rounded" !important;
-}
-
+.material-icons,
+[data-testid="stSidebarCollapseButton"],
 [data-testid="stSidebarCollapseButton"] * {
     font-family: "Material Symbols Rounded" !important;
-}              
+}
+
+
+# ==================================
+#  QUIZFORGE SIDEBAR
+#================================== 
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(
+        180deg,
+        #1e1b4b 0%,
+        #25204d 55%,
+        #172033 100%
+    ) !important;
+
+    border-right: 1px solid rgba(192, 132, 252, 0.25);
+}
+
+/* Sidebar text */
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-family: 'Nunito', sans-serif !important;
+    color: #f5f3ff !important;
+}
+
+/* Sidebar headings */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-weight: 800 !important;
+    color: #ddd6fe !important;
+}
+
+/* Sidebar logo */
+[data-testid="stSidebar"] img {
+    border-radius: 20px;
+    width: 85px;
+}
+
+/* Sidebar dividers */
+[data-testid="stSidebar"] hr {
+    border-color: rgba(192, 132, 252, 0.3);
+}
+
 </style>
 """, unsafe_allow_html=True)
+# ==========================================
+# QUIZFORGE SIDEBAR
+# ==========================================
+
+with st.sidebar:
+    st.image(
+        "src/mcqgenerator/assets/favicon.png",
+        width=85
+    )
+
+    st.header("About QuizForge")
+
+    st.write(
+        "Upload a PDF and generate AI-powered quizzes instantly."
+    )
+
+# ==========================================
+# QUIZFORGE TITLE
+# ==========================================
 
 st.markdown(
-    """
-    <h1 style="
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 3rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 0;
-    ">
-        🧠 QuizForge
-    </h1>
-    """,
+    '<h1 class="quizforge-title">QuizForge</h1>',
     unsafe_allow_html=True
 )
 
 st.markdown(
     "Transform PDFs into AI-generated quizzes in seconds."
 )
+
+st.write("")
+
+# ==========================================
+# PDF UPLOAD AND SETTINGS
+# ==========================================
 
 col1, col2 = st.columns(2)
 
@@ -227,8 +259,6 @@ with col1:
     )
 
 with col2:
-    subject = st.text_input("Subject")
-
     num_questions = st.number_input(
         "Number of Questions",
         min_value=1,
@@ -237,38 +267,12 @@ with col2:
     )
 
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap');
+# ==========================================
+# GENERATE QUIZ
+# ==========================================
 
-/* Main app text */
-html, body, [data-testid="stApp"],
-[data-testid="stApp"] p,
-[data-testid="stApp"] label {
-    font-family: 'Nunito', sans-serif !important;
-}
-
-/* Playful headings */
-h1, h2, h3, h4 {
-    font-family: 'Fredoka', sans-serif !important;
-    font-weight: 600 !important;
-}
-
-/* Rounded, friendly buttons */
-.stButton button,
-[data-testid="stFormSubmitButton"] button {
-    font-family: 'Fredoka', sans-serif !important;
-    font-weight: 600 !important;
-    border-radius: 16px !important;
-}
-
-/* Answer choices */
-[data-testid="stRadio"] label {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 600 !important;
-}
-</style>
-""", unsafe_allow_html=True)
+if "quiz" not in st.session_state:
+    st.session_state.quiz = None
 
 if st.button("Generate Quiz"):
 
@@ -276,44 +280,63 @@ if st.button("Generate Quiz"):
         st.error("Please upload a PDF first.")
 
     else:
-        text = extract_text_from_pdf(uploaded_file)
-
         with st.spinner("Generating quiz..."):
-            quiz = generate_quiz(
-                text,
-                num_questions,
-                subject,
-                difficulty
-            )
+            try:
+                text = extract_text_from_pdf(uploaded_file)
 
-        st.subheader("📚 Generated Quiz")
+                quiz = generate_quiz(
+                    text,
+                    num_questions,
+                    difficulty=difficulty.lower()
+                )
 
-        for q_num, question in enumerate(quiz.questions, start=1):
+                st.session_state.quiz = quiz
 
-            with st.container(border=True):
+            except Exception as e:
+                st.session_state.quiz = None
+                st.error(f"Quiz generation failed: {e}")
 
-                st.markdown(f"### Question {q_num}")
 
-                st.write(question.question)
+# ==========================================
+# DISPLAY GENERATED QUIZ
+# ==========================================
 
-                for option_key, option_value in question.options.items():
-                    st.markdown(
-                        f"**{option_key}.** {option_value}"
+if st.session_state.quiz is not None:
+
+    quiz = st.session_state.quiz
+
+    st.subheader("Generated Quiz")
+
+    for q_num, question in enumerate(
+        quiz.questions, start=1
+    ):
+
+        with st.container(border=True):
+
+            st.markdown(f"### Question {q_num}")
+
+            st.write(question.question)
+
+            for option_key, option_value in question.options.items():
+                st.markdown(
+                    f"**{option_key}.** {option_value}"
+                )
+
+            correct = question.correct_answer
+            answer_text = question.options[correct]
+
+            with st.expander("Show Answer"):
+
+                st.success(
+                    f"Correct Answer: {correct} — {answer_text}"
+                )
+
+                st.write(
+                    f"**Explanation:** {question.explanation}"
+                )
+
+                if question.source_page is not None:
+                    st.caption(
+                        f"Source: Page {question.source_page}"
                     )
 
-                correct = question.correct_answer
-                answer_text = question.options[correct]
-
-                with st.expander("✅ Show Answer"):
-                    st.success(
-                        f"Correct Answer: {correct} — {answer_text}"
-                    )
-
-                    st.write(
-                        f"**Explanation:** {question.explanation}"
-                    )
-
-                    if question.source_page is not None:
-                        st.caption(
-                            f"Source: Page {question.source_page}"
-                        )
