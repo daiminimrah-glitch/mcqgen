@@ -11,6 +11,8 @@ This file handles the frontend, NOT the LLM generation or validation.
 """
 
 import streamlit as st
+import base64
+from pathlib import Path
 
 from src.mcqgenerator.utils import (
     extract_text_from_pdf,
@@ -28,7 +30,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
     
+DOODLE_PATH = Path(__file__).resolve().parent / "src" / "mcqgenerator" / "assets" / "corner_doodles.png"
 
+doodle_base64 = base64.b64encode(
+    DOODLE_PATH.read_bytes()
+).decode("utf-8")
 
 # ==========================================
 # QUIZFORGE STYLING
@@ -91,27 +97,24 @@ h1, h2, h3, h4 {
     margin-bottom: 0;
 }
 
+
 /* Generate Quiz button */
 .stButton > button {
     background: linear-gradient(
         135deg,
-        #22c55e,
-        #16a34a
+        #c084fc,
+        #a78bfa
     ) !important;
     color: white !important;
     border: none !important;
     border-radius: 16px !important;
     font-weight: 800 !important;
-    padding: 0.6rem 1.5rem;
+    padding: 0.6rem 1.5rem !important;
 }
 
 /* Button hover */
 .stButton > button:hover {
-    background: linear-gradient(
-        135deg,
-        #16a34a,
-        #15803d
-    ) !important;
+    background: linear-gradient(135deg, #d8b4fe, #c084fc) !important;
     color: white !important;
 }
 
@@ -200,7 +203,7 @@ h1, h2, h3, h4 {
 /* Sidebar logo */
 [data-testid="stSidebar"] img {
     border-radius: 20px;
-    width: 85px;
+    width: 450px;
 }
 
 /* Sidebar dividers */
@@ -208,8 +211,42 @@ h1, h2, h3, h4 {
     border-color: rgba(192, 132, 252, 0.3);
 }
 
+/* Sidebar heading */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-family: 'Pacifico', cursive !important;
+    font-weight: 400 !important;
+    color: #e9c5ff !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
+
+# Upper-right doodle decoration
+
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image:
+            url("data:image/png;base64,DOODLE_IMAGE"),
+            linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #1e293b 50%,
+                #334155 100%
+            ) !important;
+
+        background-repeat: no-repeat, no-repeat !important;
+        background-position: right top, center !important;
+        background-size: 850px auto, cover !important;
+    }
+    </style>
+    """.replace("DOODLE_IMAGE", doodle_base64),
+    unsafe_allow_html=True
+)
+
 # ==========================================
 # QUIZFORGE SIDEBAR
 # ==========================================
@@ -226,6 +263,7 @@ with st.sidebar:
         "Upload a PDF and generate AI-powered quizzes instantly."
     )
 
+
 # ==========================================
 # QUIZFORGE TITLE
 # ==========================================
@@ -240,6 +278,8 @@ st.markdown(
 )
 
 st.write("")
+
+
 
 # ==========================================
 # PDF UPLOAD AND SETTINGS
